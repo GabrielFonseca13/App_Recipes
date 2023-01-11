@@ -4,13 +4,21 @@ import ShareButton from '../components/ShareBtn';
 
 function DoneRecipes() {
   const [doneRecipes, setDoneRecipes] = useState([]);
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     if (localStorage.getItem('doneRecipes')) {
       const doneRecipesLocalStorage = JSON.parse(localStorage.getItem('doneRecipes'));
-      setDoneRecipes(doneRecipesLocalStorage);
+
+      if (filter === 'all') setDoneRecipes(doneRecipesLocalStorage);
+      if (filter === 'meals') {
+        setDoneRecipes(doneRecipesLocalStorage.filter((r) => r.type === 'meal'));
+      }
+      if (filter === 'drinks') {
+        setDoneRecipes(doneRecipesLocalStorage.filter((r) => r.type === 'drink'));
+      }
     }
-  }, []);
+  }, [filter]);
 
   return (
     <div>
@@ -18,18 +26,21 @@ function DoneRecipes() {
       <button
         data-testid="filter-by-all-btn"
         type="button"
+        onClick={ () => { setFilter('all'); } }
       >
         All
       </button>
       <button
         data-testid="filter-by-meal-btn"
         type="button"
+        onClick={ () => { setFilter('meals'); } }
       >
         Meals
       </button>
       <button
         data-testid="filter-by-drink-btn"
         type="button"
+        onClick={ () => { setFilter('drinks'); } }
       >
         Drinks
       </button>
