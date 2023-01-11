@@ -121,5 +121,23 @@ describe('Testing RecipeInProgress page', () => {
     userEvent.click(finishButton);
 
     expect(history.location.pathname).toBe('/done-recipes');
+
+    const drink = await screen.findByText('Aquamarine');
+    expect(drink).toBeInTheDocument();
+
+    const drinksFilterBtn = await screen.getByTestId('filter-by-drink-btn');
+    userEvent.click(drinksFilterBtn);
+    const drink2 = await screen.queryByText('Aquamarine');
+    expect(drink2).toBeInTheDocument();
+
+    const allFilterBtn = await screen.getByTestId('filter-by-all-btn');
+    userEvent.click(allFilterBtn);
+    const drink3 = await screen.queryByText('Aquamarine');
+    expect(drink3).toBeInTheDocument();
+
+    const mealsFilterBtn = await screen.getByTestId('filter-by-meal-btn');
+    userEvent.click(mealsFilterBtn);
+    const drink4 = await screen.queryByText('Aquamarine');
+    expect(drink4).not.toBeInTheDocument();
   });
 });
