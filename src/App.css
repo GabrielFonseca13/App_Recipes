@@ -71,3 +71,8 @@
     transform: rotate(-10deg);
   }
 }
+
+
+img {
+  max-width: 100vw;
+}
