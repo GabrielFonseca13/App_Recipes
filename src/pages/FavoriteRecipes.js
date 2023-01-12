@@ -13,6 +13,13 @@ function FavoriteRecipes() {
     }
   }, []);
 
+  const removeFavoriteRecipe = (id) => {
+    const favRecipesLocalStorage = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const filteredFavoriteRecipes = favRecipesLocalStorage.filter((r) => r.id !== id);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(filteredFavoriteRecipes));
+    setFavoriteRecipes(filteredFavoriteRecipes);
+  };
+
   return (
     <div>
       <Header title="Favorite Recipes" searchIcon={ false } />
@@ -58,6 +65,7 @@ function FavoriteRecipes() {
             />
             <button
               type="button"
+              onClick={ () => { removeFavoriteRecipe(recipe.id); } }
             >
               <img
                 src={ blackHeartIcon }

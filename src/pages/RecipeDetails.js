@@ -59,20 +59,19 @@ function RecipeDetails({ history, match: { params: { id } } }) {
         inProgress={ false }
       />
       <Recomendation history={ history } />
-      {recipeStatus === 'finalized'
-        ? ''
-        : (
-          <Link to={ `${history.location.pathname}/in-progress` }>
-            <button
-              type="button"
-              data-testid="start-recipe-btn"
-              className="btnPageDetails"
-            >
-              Start Recipe
-            </button>
-          </Link>
-        ) }
-      {recipeStatus === 'inProgress'
+      <Link to={ `${history.location.pathname}/in-progress` }>
+        <button
+          type="button"
+          data-testid="start-recipe-btn"
+          className="btnPageDetails"
+        >
+          {
+            recipeStatus === 'inProgress' ? 'Continue Recipe' : 'Start Recipe'
+          }
+        </button>
+      </Link>
+
+      {/* {recipeStatus === 'inProgress'
         ? (
           <button
             type="button"
@@ -82,7 +81,7 @@ function RecipeDetails({ history, match: { params: { id } } }) {
             Continue Recipe
           </button>
         )
-        : ''}
+        : ''} */}
     </header>
   );
 }
