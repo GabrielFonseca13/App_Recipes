@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import ShareButton from '../components/ShareBtn';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
-function FavoriteRecipes() {
+function FavoriteRecipes({ history }) {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [filter, setFilter] = useState('all');
 
@@ -55,12 +56,17 @@ function FavoriteRecipes() {
       { favoriteRecipes.length > 0
         && favoriteRecipes.map((recipe, index) => (
           <div key={ index }>
-            <img
-              src={ recipe.image }
-              alt={ recipe.name }
-              data-testid={ `${index}-horizontal-image` }
-            />
-            <p data-testid={ `${index}-horizontal-name` }>{ recipe.name }</p>
+            <button
+              type="button"
+              onClick={ () => { history.push(`${recipe.type}s/${recipe.id}`); } }
+            >
+              <img
+                src={ recipe.image }
+                alt={ recipe.name }
+                data-testid={ `${index}-horizontal-image` }
+              />
+              <p data-testid={ `${index}-horizontal-name` }>{ recipe.name }</p>
+            </button>
             <p data-testid={ `${index}-horizontal-top-text` }>
               {
                 recipe.type === 'meal'
@@ -89,5 +95,11 @@ function FavoriteRecipes() {
     </div>
   );
 }
+
+FavoriteRecipes.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default FavoriteRecipes;

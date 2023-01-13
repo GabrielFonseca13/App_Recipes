@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import App from '../App';
@@ -44,6 +44,34 @@ describe('Testa o componente FavoriteRecipes', () => {
     userEvent.click(favButton);
 
     const favRecipeName = screen.queryByText('Burek');
+    expect(favRecipeName).not.toBeInTheDocument();
+  });
+
+  it('04 - Testa se os filtros estao funcionando', () => {
+    const { history } = renderWithRouter(<App />);
+    localStorage.clear();
+    localStorage.setItem('favoriteRecipes', '[{"id":"53060","type":"meal","nationality":"Croatian","category":"Side","alcoholicOrNot":"","name":"Burek","image":"https://www.themealdb.com/images/media/meals/tkxquw1628771028.jpg"}]');
+
+    act(() => {
+      history.push(favRecipesPath);
+    });
+
+    const favRecipeName = screen.getByTestId('0-horizontal-top-text');
+    expect(favRecipeName).toBeInTheDocument();
+
+    const allFilterBtn = screen.getByTestId('filter-by-all-btn');
+    userEvent.click(allFilterBtn);
+
+    expect(favRecipeName).toBeInTheDocument();
+
+    const mealFilterBtn = screen.getByTestId('filter-by-meal-btn');
+    userEvent.click(mealFilterBtn);
+
+    expect(favRecipeName).toBeInTheDocument();
+
+    const drinkFilterBtn = screen.getByTestId('filter-by-drink-btn');
+    userEvent.click(drinkFilterBtn);
+
     expect(favRecipeName).not.toBeInTheDocument();
   });
 });
