@@ -5,13 +5,21 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function FavoriteRecipes() {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     if (localStorage.getItem('favoriteRecipes')) {
       const favRecipesLocalStorage = JSON.parse(localStorage.getItem('favoriteRecipes'));
-      setFavoriteRecipes(favRecipesLocalStorage);
+
+      if (filter === 'all') setFavoriteRecipes(favRecipesLocalStorage);
+      if (filter === 'meals') {
+        setFavoriteRecipes(favRecipesLocalStorage.filter((r) => r.type === 'meal'));
+      }
+      if (filter === 'drinks') {
+        setFavoriteRecipes(favRecipesLocalStorage.filter((r) => r.type === 'drink'));
+      }
     }
-  }, []);
+  }, [filter]);
 
   const removeFavoriteRecipe = (id) => {
     const favRecipesLocalStorage = JSON.parse(localStorage.getItem('favoriteRecipes'));
@@ -26,18 +34,21 @@ function FavoriteRecipes() {
       <button
         data-testid="filter-by-all-btn"
         type="button"
+        onClick={ () => { setFilter('all'); } }
       >
         All
       </button>
       <button
         data-testid="filter-by-meal-btn"
         type="button"
+        onClick={ () => { setFilter('meals'); } }
       >
         Meals
       </button>
       <button
         data-testid="filter-by-drink-btn"
         type="button"
+        onClick={ () => { setFilter('drinks'); } }
       >
         Drinks
       </button>
